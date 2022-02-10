@@ -1,7 +1,7 @@
 
 server:
   servlet:
-    context-path=/api:
+    context-path: /api
 
 spring:
   datasource:
