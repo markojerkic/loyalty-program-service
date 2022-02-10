@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /api
 
+jwt:
+  secret: tdYf]K^CJLpYu#%8ae#/-fiX:HudO7.ahkH!b(l&spfj'a@SCfqoT:"Q!s[u'Q'
+
 spring:
   datasource:
     url: jdbc:h2:mem:mydb
