@@ -2,14 +2,8 @@ package hr.loyalty.program.loyaltyprogramservice.auth.service
 
 import hr.loyalty.program.loyaltyprogramservice.auth.error.UserExistsException
 import hr.loyalty.program.loyaltyprogramservice.auth.model.User
-import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.JwtToken
-import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.LoginRequest
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterRequest
 import hr.loyalty.program.loyaltyprogramservice.auth.repository.UserRepository
-import hr.loyalty.program.loyaltyprogramservice.auth.util.JwtUtils
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder

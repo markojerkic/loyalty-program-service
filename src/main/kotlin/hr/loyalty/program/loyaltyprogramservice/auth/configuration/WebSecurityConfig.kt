@@ -18,7 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 class WebSecurityConfig(private val authTokenFilter: AuthTokenFilter,
                         private val unauthorizedHandler: AuthEntryPointJwt,
-                        private val userManagementService: UserManagementService
+                        private val userManagementService: UserManagementService,
+                        private val passwordEncoder: PasswordEncoder
 ): WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.cors()
@@ -41,11 +42,6 @@ class WebSecurityConfig(private val authTokenFilter: AuthTokenFilter,
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(this.userManagementService).passwordEncoder(this.passwordEncoder());
-    }
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
+        auth.userDetailsService(this.userManagementService).passwordEncoder(passwordEncoder);
     }
 }
