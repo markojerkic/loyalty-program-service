@@ -32,6 +32,7 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    runtimeOnly("org.postgresql:postgresql")
+    testImplementation("io.mockk:mockk:1.4.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("junit:junit:4.13.1")

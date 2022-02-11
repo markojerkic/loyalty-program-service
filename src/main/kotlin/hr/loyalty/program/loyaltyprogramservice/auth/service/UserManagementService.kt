@@ -1,7 +1,10 @@
 package hr.loyalty.program.loyaltyprogramservice.auth.service
 
+import hr.loyalty.program.loyaltyprogramservice.auth.error.UserExistsException
+import hr.loyalty.program.loyaltyprogramservice.auth.model.User
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.JwtToken
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.LoginRequest
+import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterRequest
 import hr.loyalty.program.loyaltyprogramservice.auth.repository.UserRepository
 import hr.loyalty.program.loyaltyprogramservice.auth.util.JwtUtils
 import org.springframework.security.authentication.AuthenticationManager
@@ -9,26 +12,31 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserManagementService(val userRepo: UserRepository,
-                            val authManager: AuthenticationManager,
-                            val jwtUtil: JwtUtils): UserDetailsService {
-
-    fun login(loginRequest: LoginRequest): JwtToken {
-        val auth = authManager.authenticate(UsernamePasswordAuthenticationToken(
-            loginRequest.email, loginRequest.password
-        ))
-
-        SecurityContextHolder.getContext().authentication = auth
-
-        val token = jwtUtil.generateToken(auth)
-
-        return JwtToken(loginRequest.email, token)
-    }
+                            val passwordEncoder: PasswordEncoder): UserDetailsService {
 
     override fun loadUserByUsername(username: String): UserDetails {
         return userRepo.findUserByEmail(username).orElseThrow()
+    }
+
+    fun register(registerRequest: RegisterRequest): User {
+        if (userRepo.existsByEmail(registerRequest.email)) {
+            throw UserExistsException("User with email ${registerRequest.email} already exists")
+        }
+
+        val user = User(
+            UUID.randomUUID(),
+            registerRequest.email,
+            registerRequest.firstName,
+            registerRequest.lastName,
+            passwordEncoder.encode(registerRequest.password)
+        )
+
+        return userRepo.save(user)
     }
 }
