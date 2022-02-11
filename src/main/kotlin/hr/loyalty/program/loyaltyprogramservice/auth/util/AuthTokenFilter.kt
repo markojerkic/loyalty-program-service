@@ -24,9 +24,14 @@ class AuthTokenFilter(private val jwtUtils: JwtUtils,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        val jwtToken = parseJwt(request)
+        if (jwtToken == null) {
+            filterChain.doFilter(request, response)
+            return
+        }
         val user = userManagementService.loadUserByUsername(
             jwtUtils.decodeJwt(
-                parseJwt(request)!!
+                jwtToken
             ).getClaim("username").asString()
         )
         val auth = UsernamePasswordAuthenticationToken(

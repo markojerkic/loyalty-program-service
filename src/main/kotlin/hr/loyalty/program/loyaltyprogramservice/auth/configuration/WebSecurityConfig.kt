@@ -24,16 +24,19 @@ class WebSecurityConfig(private val authTokenFilter: AuthTokenFilter,
     override fun configure(http: HttpSecurity) {
         http.cors()
             .and()
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf()
+                    .disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/user/info")
-                    .hasAuthority("SCOPE_read")
-                .antMatchers(HttpMethod.POST, "/**")
-                    .hasAuthority("SCOPE_write")
-                .anyRequest().authenticated()
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+                .authorizeRequests()
+                    .antMatchers(HttpMethod.POST, "/user", "/auth")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
     }
 
     @Bean

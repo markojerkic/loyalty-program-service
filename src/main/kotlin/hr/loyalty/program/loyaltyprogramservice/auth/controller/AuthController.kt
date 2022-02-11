@@ -5,6 +5,7 @@ import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.LoginRequest
 import hr.loyalty.program.loyaltyprogramservice.auth.service.auth.AuthService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @Validated
 class AuthController(val authService: AuthService) {
     @PostMapping
-    fun login(loginRequest: LoginRequest): JwtToken {
+    fun login(@RequestBody loginRequest: LoginRequest): JwtToken {
         return authService.login(loginRequest)
     }
 }

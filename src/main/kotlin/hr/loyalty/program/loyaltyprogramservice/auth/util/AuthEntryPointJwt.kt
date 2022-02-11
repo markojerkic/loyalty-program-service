@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse
 class AuthEntryPointJwt : AuthenticationEntryPoint {
     @Throws(IOException::class)
     override fun commence(
-        request: HttpServletRequest, response: HttpServletResponse,
+        request: HttpServletRequest,
+        response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        authException.printStackTrace()
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
     }
 }

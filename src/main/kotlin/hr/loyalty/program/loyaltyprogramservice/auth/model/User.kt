@@ -1,9 +1,12 @@
 package hr.loyalty.program.loyaltyprogramservice.auth.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.GenericGenerator
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import java.util.UUID
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -25,23 +28,30 @@ data class User(
     var firstName: String,
     @Column(nullable = false)
     var lastName: String,
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     var pass: String
 ): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+        return Collections.emptyList()
     }
 
+    @JsonIgnore
     override fun getPassword(): String = pass
 
+    @JsonIgnore
     override fun getUsername(): String = email
 
+    @JsonIgnore
     override fun isAccountNonExpired(): Boolean = true
 
+    @JsonIgnore
     override fun isAccountNonLocked(): Boolean = true
 
+    @JsonIgnore
     override fun isCredentialsNonExpired(): Boolean = true
 
+    @JsonIgnore
     override fun isEnabled(): Boolean = true
 }
