@@ -13,7 +13,7 @@ class MvcExceptionHandler {
     @ExceptionHandler(UserExistsException::class)
     fun handleUserExists(e: UserExistsException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
-            ErrorResponse(e.message!!)
+            ErrorResponse(e.message!!, "email")
         )
     }
 }
