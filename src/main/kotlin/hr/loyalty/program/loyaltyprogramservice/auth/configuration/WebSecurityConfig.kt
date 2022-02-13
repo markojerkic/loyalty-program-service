@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
@@ -23,19 +24,25 @@ class WebSecurityConfig(private val authTokenFilter: AuthTokenFilter,
     override fun configure(http: HttpSecurity) {
         http.cors()
             .and()
-                .csrf()
-                    .disable()
-                .exceptionHandling()
-                    .authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+//            .and()
+//                .csrf()
+//                    .disable()
+//                .exceptionHandling()
+//                    .authenticationEntryPoint(unauthorizedHandler).and()
+//                .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .and()
+//                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/user", "/auth")
                         .permitAll()
-                    .anyRequest()
-                        .authenticated()
+                    .antMatchers( "/h2-console/**")
+                        .permitAll()
+            .and().formLogin()
+//                    .antMatchers("/oauth/**")
+//                        .permitAll()
+//                    .anyRequest()
+//                        .authenticated()
     }
 
     @Bean

@@ -18,8 +18,11 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
+    implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
+    implementation("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.3")
+    implementation("org.springframework.security.oauth:spring-security-oauth2:2.5.1.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.auth0:java-jwt:3.18.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
