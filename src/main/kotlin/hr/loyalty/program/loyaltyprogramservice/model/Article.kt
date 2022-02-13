@@ -2,7 +2,7 @@ package hr.loyalty.program.loyaltyprogramservice.model
 
 import org.hibernate.Hibernate
 import org.hibernate.annotations.GenericGenerator
-import java.util.UUID
+import java.util.*
 import javax.persistence.*
 
 @Entity

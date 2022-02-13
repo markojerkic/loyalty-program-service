@@ -2,7 +2,6 @@ package hr.loyalty.program.loyaltyprogramservice.auth.service.auth
 
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.JwtToken
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.LoginRequest
-import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterRequest
 import hr.loyalty.program.loyaltyprogramservice.auth.util.JwtUtils
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

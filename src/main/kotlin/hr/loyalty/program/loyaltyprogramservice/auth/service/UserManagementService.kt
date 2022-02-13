@@ -3,6 +3,7 @@ package hr.loyalty.program.loyaltyprogramservice.auth.service
 import hr.loyalty.program.loyaltyprogramservice.auth.error.UserExistsException
 import hr.loyalty.program.loyaltyprogramservice.auth.model.User
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterRequest
+import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterResponse
 import hr.loyalty.program.loyaltyprogramservice.auth.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -18,7 +19,7 @@ class UserManagementService(val userRepo: UserRepository,
         return userRepo.findUserByEmail(username).orElseThrow()
     }
 
-    fun register(registerRequest: RegisterRequest): User {
+    fun register(registerRequest: RegisterRequest): RegisterResponse {
         if (userRepo.existsByEmail(registerRequest.email)) {
             throw UserExistsException("User with email ${registerRequest.email} already exists")
         }
@@ -31,6 +32,10 @@ class UserManagementService(val userRepo: UserRepository,
             passwordEncoder.encode(registerRequest.password)
         )
 
-        return userRepo.save(user)
+        return mapToRegisterResponse(userRepo.save(user))
+    }
+
+    private fun mapToRegisterResponse(user: User): RegisterResponse {
+        return RegisterResponse(user.email, user.firstName, user.lastName)
     }
 }

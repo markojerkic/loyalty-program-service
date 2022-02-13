@@ -1,7 +1,7 @@
 package hr.loyalty.program.loyaltyprogramservice.auth.controller
 
-import hr.loyalty.program.loyaltyprogramservice.auth.model.User
 import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterRequest
+import hr.loyalty.program.loyaltyprogramservice.auth.model.dto.RegisterResponse
 import hr.loyalty.program.loyaltyprogramservice.auth.service.UserManagementService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @Validated
 class UserManagementController(val userManagementService: UserManagementService) {
     @PostMapping
-    fun addNewUser(@RequestBody registerRequest: RegisterRequest): User {
+    fun addNewUser(@RequestBody registerRequest: RegisterRequest): RegisterResponse {
         return userManagementService.register(registerRequest)
     }
 }
