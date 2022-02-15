@@ -34,7 +34,7 @@ class WebSecurityConfig(private val authTokenFilter: AuthTokenFilter,
                 .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/user", "/auth")
                         .permitAll()
-                    .antMatchers(HttpMethod.GET, "/**")
+                    .antMatchers( "/**")
                         .permitAll()
                     .anyRequest()
                         .authenticated()
