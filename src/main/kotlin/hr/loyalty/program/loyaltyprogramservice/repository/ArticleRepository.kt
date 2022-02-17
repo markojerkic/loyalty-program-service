@@ -1,4 +1,4 @@
-package hr.loyalty.program.loyaltyprogramservice
+package hr.loyalty.program.loyaltyprogramservice.repository
 
 import hr.loyalty.program.loyaltyprogramservice.model.Article
 import org.springframework.data.jpa.repository.JpaRepository

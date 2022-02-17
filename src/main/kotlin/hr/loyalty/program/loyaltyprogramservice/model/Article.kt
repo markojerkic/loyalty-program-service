@@ -6,7 +6,6 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 data class Article (
     @Id
     @GeneratedValue(generator = "UUID", strategy = GenerationType.IDENTITY)
@@ -15,8 +14,15 @@ data class Article (
         strategy = "org.hibernate.id.UUIDGenerator"
     )
     val id: UUID,
+    @Column
     val name: String,
-    val description: String
+    @Column
+    val description: String,
+    @Column
+    val imageUri: String?
+//    @OneToOne(targetEntity = Image::class, cascade = arrayOf(CascadeType.DETACH))
+//    var image: Image?
+    
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
