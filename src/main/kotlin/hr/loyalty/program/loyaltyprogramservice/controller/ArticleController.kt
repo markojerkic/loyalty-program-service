@@ -24,4 +24,7 @@ class ArticleController(val articleService: ArticleService) {
     @PatchMapping("{id}")
     fun updateArticle(@PathVariable id: UUID, articlePatchDTO: ArticlePatchDto) =
         articleService.updateArticle(id, articlePatchDTO)
+
+    @PutMapping("{id}")
+    fun toggleStatus(@PathVariable id: UUID) = articleService.toggleStatus(id)
 }

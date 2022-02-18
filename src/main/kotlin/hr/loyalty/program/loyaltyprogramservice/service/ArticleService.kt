@@ -5,6 +5,8 @@ import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePatchDto
 import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePostDto
 import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticleResponseDto
 import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
+import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus.DRAFT
+import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus.PUBLISHED
 import hr.loyalty.program.loyaltyprogramservice.repository.ArticleRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -23,8 +25,11 @@ class ArticleService(
         return articles.map { article -> mapArticleDto(article) }
     }
 
+    private fun findArticleById(id: UUID): Article =
+        articleRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+
     fun getArticleById(id: UUID): ArticleResponseDto {
-        val article = articleRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+        val article = findArticleById(id)
 
         return mapArticleDto(article)
     }
@@ -55,8 +60,7 @@ class ArticleService(
     }
 
     fun updateArticle(id: UUID, dto: ArticlePatchDto): ArticleResponseDto {
-        val article = articleRepository.findById(id)
-            .orElseThrow{ResponseStatusException(HttpStatus.NOT_FOUND)}
+        val article = findArticleById(id)
 
         article.status = PublishedStatus.DRAFT
         article.name = dto.name
@@ -70,5 +74,11 @@ class ArticleService(
         }
 
         return mapArticleDto(articleRepository.save(article))
+    }
+
+    fun toggleStatus(id: UUID): PublishedStatus {
+        val article = findArticleById(id)
+        article.status = if (article.status == PUBLISHED) DRAFT else PUBLISHED
+        return articleRepository.save(article).status
     }
 }
