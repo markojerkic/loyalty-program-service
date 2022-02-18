@@ -1,5 +1,6 @@
 package hr.loyalty.program.loyaltyprogramservice.model
 
+import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
 import org.hibernate.Hibernate
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
@@ -15,11 +16,14 @@ data class Article (
     )
     val id: UUID,
     @Column
-    val name: String,
+    var name: String,
     @Column
-    val description: String,
+    var description: String,
     @Column
-    val imageUri: String?
+    var imageUri: String?,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: PublishedStatus
 //    @OneToOne(targetEntity = Image::class, cascade = arrayOf(CascadeType.DETACH))
 //    var image: Image?
     

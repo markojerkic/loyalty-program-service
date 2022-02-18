@@ -36,4 +36,17 @@ class ImageService {
             }
         }
     }
+
+    fun deleteImage(imageUri: String) {
+        if (Files.exists(root.resolve(imageUri))) {
+            Files.delete(root.resolve(imageUri))
+        }
+    }
+
+    fun replaceImage(imageUri: String?, image: MultipartFile): String {
+        if (imageUri != null) {
+            deleteImage(imageUri)
+        }
+        return saveImage(image)
+    }
 }

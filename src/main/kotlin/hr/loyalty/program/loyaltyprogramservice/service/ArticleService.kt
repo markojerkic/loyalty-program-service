@@ -1,10 +1,14 @@
 package hr.loyalty.program.loyaltyprogramservice.service
 
 import hr.loyalty.program.loyaltyprogramservice.model.Article
+import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePatchDto
 import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePostDto
 import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticleResponseDto
+import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
 import hr.loyalty.program.loyaltyprogramservice.repository.ArticleRepository
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
@@ -20,12 +24,9 @@ class ArticleService(
     }
 
     fun getArticleById(id: UUID): ArticleResponseDto {
-        val article = articleRepository.findById(id)
-        if (article.isEmpty) {
-            throw IllegalArgumentException("Article with id $id is not found")
-        }
+        val article = articleRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
 
-        return mapArticleDto(article.get())
+        return mapArticleDto(article)
     }
 
     private fun mapArticleDto(article: Article): ArticleResponseDto {
@@ -34,7 +35,8 @@ class ArticleService(
             article.id,
             article.name,
             article.description,
-            imageUri
+            imageUri,
+            article.status
         )
     }
 
@@ -46,8 +48,27 @@ class ArticleService(
                 UUID.randomUUID(),
                 articlePostDto.name,
                 articlePostDto.description,
-                imageUri
+                imageUri,
+                PublishedStatus.DRAFT
             )
         )
+    }
+
+    fun updateArticle(id: UUID, dto: ArticlePatchDto): ArticleResponseDto {
+        val article = articleRepository.findById(id)
+            .orElseThrow{ResponseStatusException(HttpStatus.NOT_FOUND)}
+
+        article.status = PublishedStatus.DRAFT
+        article.name = dto.name
+        article.description = dto.description
+
+        if (dto.removeImage && article.imageUri != null) {
+            imageService.deleteImage(article.imageUri!!)
+            article.imageUri = null
+        } else if (dto.image != null) {
+            article.imageUri = imageService.replaceImage(article.imageUri, dto.image)
+        }
+
+        return mapArticleDto(articleRepository.save(article))
     }
 }
