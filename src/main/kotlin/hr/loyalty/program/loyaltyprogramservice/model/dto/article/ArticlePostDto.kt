@@ -1,4 +1,4 @@
-package hr.loyalty.program.loyaltyprogramservice.model.dto
+package hr.loyalty.program.loyaltyprogramservice.model.dto.article
 
 import org.springframework.web.multipart.MultipartFile
 

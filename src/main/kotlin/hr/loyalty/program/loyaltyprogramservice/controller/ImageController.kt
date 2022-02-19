@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("image")
 class ImageController(
-    val imageService: ImageService
+    private val imageService: ImageService
 ) {
     @GetMapping(
         value = ["{imageName}"],

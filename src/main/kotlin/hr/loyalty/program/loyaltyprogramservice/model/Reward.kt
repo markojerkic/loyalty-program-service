@@ -1,5 +1,8 @@
 package hr.loyalty.program.loyaltyprogramservice.model
 
+import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
+import org.hibernate.annotations.Cascade
+import org.hibernate.annotations.CascadeType
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
 import javax.persistence.*
@@ -15,6 +18,10 @@ data class Reward(
     val id: UUID,
     @Column(nullable = false)
     var requiredPoints: Number,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: PublishedStatus,
     @ManyToOne
-    val article: Article
+    @Cascade(CascadeType.DELETE)
+    var article: Article
 )

@@ -1,7 +1,7 @@
 package hr.loyalty.program.loyaltyprogramservice.controller
 
-import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePatchDto
-import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePostDto
+import hr.loyalty.program.loyaltyprogramservice.model.dto.article.ArticlePatchDto
+import hr.loyalty.program.loyaltyprogramservice.model.dto.article.ArticlePostDto
 import hr.loyalty.program.loyaltyprogramservice.service.ArticleService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -11,7 +11,7 @@ import java.util.*
 @RequestMapping("article")
 @Validated
 @CrossOrigin("*")
-class ArticleController(val articleService: ArticleService) {
+class ArticleController(private val articleService: ArticleService) {
     @GetMapping
     fun getAllArticles() = articleService.getAllArticles()
 

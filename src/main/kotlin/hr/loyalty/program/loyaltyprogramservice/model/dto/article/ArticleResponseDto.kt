@@ -1,4 +1,4 @@
-package hr.loyalty.program.loyaltyprogramservice.model.dto
+package hr.loyalty.program.loyaltyprogramservice.model.dto.article
 
 import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
 import java.util.UUID

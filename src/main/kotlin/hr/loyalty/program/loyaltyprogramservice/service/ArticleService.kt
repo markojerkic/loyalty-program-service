@@ -1,9 +1,9 @@
 package hr.loyalty.program.loyaltyprogramservice.service
 
 import hr.loyalty.program.loyaltyprogramservice.model.Article
-import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePatchDto
-import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticlePostDto
-import hr.loyalty.program.loyaltyprogramservice.model.dto.ArticleResponseDto
+import hr.loyalty.program.loyaltyprogramservice.model.dto.article.ArticlePatchDto
+import hr.loyalty.program.loyaltyprogramservice.model.dto.article.ArticlePostDto
+import hr.loyalty.program.loyaltyprogramservice.model.dto.article.ArticleResponseDto
 import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus
 import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus.DRAFT
 import hr.loyalty.program.loyaltyprogramservice.model.enum.PublishedStatus.PUBLISHED
@@ -15,8 +15,8 @@ import java.util.*
 
 @Service
 class ArticleService(
-    val articleRepository: ArticleRepository,
-    val imageService: ImageService
+    private val articleRepository: ArticleRepository,
+    private val imageService: ImageService
 ) {
 
     fun getAllArticles(): List<ArticleResponseDto> {
@@ -25,7 +25,7 @@ class ArticleService(
         return articles.map { article -> mapArticleDto(article) }
     }
 
-    private fun findArticleById(id: UUID): Article =
+    fun findArticleById(id: UUID): Article =
         articleRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
 
     fun getArticleById(id: UUID): ArticleResponseDto {
@@ -34,8 +34,12 @@ class ArticleService(
         return mapArticleDto(article)
     }
 
+    fun resolveImageUri(imageUri: String?): String? {
+        return if (imageUri != null) "/image/${imageUri}" else null
+    }
+
     private fun mapArticleDto(article: Article): ArticleResponseDto {
-        val imageUri = if (article.imageUri != null) "/image/${article.imageUri}" else null
+        val imageUri = resolveImageUri(article.imageUri)
         return ArticleResponseDto(
             article.id,
             article.name,
@@ -54,7 +58,7 @@ class ArticleService(
                 articlePostDto.name,
                 articlePostDto.description,
                 imageUri,
-                PublishedStatus.DRAFT
+                DRAFT
             )
         )
     }
@@ -62,7 +66,7 @@ class ArticleService(
     fun updateArticle(id: UUID, dto: ArticlePatchDto): ArticleResponseDto {
         val article = findArticleById(id)
 
-        article.status = PublishedStatus.DRAFT
+        article.status = DRAFT
         article.name = dto.name
         article.description = dto.description
 
