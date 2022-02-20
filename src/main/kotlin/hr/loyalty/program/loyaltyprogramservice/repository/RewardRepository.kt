@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface RewardRepository: JpaRepository<Reward, UUID>
+interface RewardRepository: JpaRepository<Reward, UUID> {
+    fun findAllByArticle_Id(id: UUID): List<Reward>
+}

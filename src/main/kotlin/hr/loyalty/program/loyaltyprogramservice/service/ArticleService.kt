@@ -16,7 +16,8 @@ import java.util.*
 @Service
 class ArticleService(
     private val articleRepository: ArticleRepository,
-    private val imageService: ImageService
+    private val imageService: ImageService,
+    private val publishedStatusService: PublishedStatusService
 ) {
 
     fun getAllArticles(): List<ArticleResponseDto> {
@@ -82,8 +83,8 @@ class ArticleService(
 
     fun toggleStatus(id: UUID): PublishedStatus {
         val article = findArticleById(id)
-        article.status = if (article.status == PUBLISHED) DRAFT else PUBLISHED
-        return articleRepository.save(article).status
+
+        return publishedStatusService.toggleStatus(article)
     }
 
     fun getAllPublishedArticles(): List<ArticleResponseDto> {

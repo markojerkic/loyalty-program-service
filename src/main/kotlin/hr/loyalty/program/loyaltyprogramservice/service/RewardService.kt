@@ -13,7 +13,8 @@ import java.util.*
 @Service
 class RewardService(
     private val rewardRepository: RewardRepository,
-    private val articleService: ArticleService
+    private val articleService: ArticleService,
+    private val publishedStatusService: PublishedStatusService
 ) {
 
     private fun mapToDto(reward: Reward): RewardResponseDto {
@@ -62,9 +63,7 @@ class RewardService(
 
     fun toggleStatus(id: UUID): PublishedStatus {
         val reward = findRewardById(id)
-        reward.status = if (reward.status == PublishedStatus.PUBLISHED)
-            PublishedStatus.DRAFT else PublishedStatus.PUBLISHED
 
-        return rewardRepository.save(reward).status
+        return publishedStatusService.toggleStatus(reward)
     }
 }
