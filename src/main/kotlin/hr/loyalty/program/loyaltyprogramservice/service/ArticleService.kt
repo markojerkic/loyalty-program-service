@@ -85,4 +85,8 @@ class ArticleService(
         article.status = if (article.status == PUBLISHED) DRAFT else PUBLISHED
         return articleRepository.save(article).status
     }
+
+    fun getAllPublishedArticles(): List<ArticleResponseDto> {
+        return articleRepository.findAllByStatusOrderByNameAsc(PUBLISHED).map { article -> mapArticleDto(article) }
+    }
 }

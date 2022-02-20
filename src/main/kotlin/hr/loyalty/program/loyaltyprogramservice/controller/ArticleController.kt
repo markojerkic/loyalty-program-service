@@ -10,10 +10,12 @@ import java.util.*
 @RestController
 @RequestMapping("article")
 @Validated
-@CrossOrigin("*")
 class ArticleController(private val articleService: ArticleService) {
     @GetMapping
     fun getAllArticles() = articleService.getAllArticles()
+
+    @GetMapping("published")
+    fun getAllPublishedArticles() = articleService.getAllPublishedArticles()
 
     @GetMapping("{id}")
     fun getArticleById(@PathVariable id: UUID) = articleService.getArticleById(id)
